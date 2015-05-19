@@ -26,7 +26,7 @@ Add the following to your model:
 class Post < ActiveRecord::Base
   extend ArTranslate
 
-  translates :descriptions, languages: %w(de en)
+  translates :descriptions, languages: %w(de en es)
 end
 ```
 
@@ -45,10 +45,10 @@ post.description_de
 # => 'Hallo wie geht es dir?'
 
 post.description_languages
-# => ['de', 'en']
+# => ['de', 'en', 'es']
 
 post.description_attributes
-# => [:description_de, :description_en]
+# => [:description_de, :description_en, :description_es]
 ```
 
 This makes it really easy to use forms with translated attributes:
