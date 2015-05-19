@@ -33,8 +33,16 @@ RSpec.describe ArTranslate do
       expect(post.name_attributes).to eq(%i(name_de name_en))
     end
 
+    it 'returns a list of accessor names at class level' do
+      expect(Post.name_attributes).to eq(%i(name_de name_en))
+    end
+
     it 'returns a list of languages' do
       expect(post.name_languages).to eq(%w(de en))
+    end
+
+    it 'returns a list of languages at class level' do
+      expect(Post.name_languages).to eq(%w(de en))
     end
   end
 

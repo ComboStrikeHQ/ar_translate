@@ -66,6 +66,16 @@ module ArTranslate
       end
     end
 
+    def model_class_method(name, &block)
+      method_name = "#{prefix}_#{name}"
+
+      model.instance_eval do
+        define_singleton_method(method_name) do |*args|
+          instance_exec(*args, &block)
+        end
+      end
+    end
+
     def define_reader(lang)
       c_column = column
       model_method(lang) do
@@ -83,11 +93,13 @@ module ArTranslate
     def define_attributes
       c_attributes = attributes
       model_method(:attributes) { c_attributes }
+      model_class_method(:attributes) { c_attributes }
     end
 
     def define_languages
       c_langs = langs
       model_method(:languages) { c_langs }
+      model_class_method(:languages) { c_langs }
     end
   end
 end
