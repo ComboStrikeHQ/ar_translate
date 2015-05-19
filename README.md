@@ -49,6 +49,10 @@ post.description_languages
 
 post.description_attributes
 # => [:description_de, :description_en, :description_es]
+
+# The two methods above also work at class level:
+Post.description_languages # => [...]
+Post.description_attributes # => [...]
 ```
 
 This makes it really easy to use forms with translated attributes:
