@@ -59,6 +59,19 @@ This makes it really easy to use forms with translated attributes:
     = f.text_field attr
 ```
 
+Or you can add validations to your model:
+```ruby
+class Post < ActiveRecord::Base
+  extend ArTranslate
+
+  translates :descriptions, languages: %w(de en es)
+
+  description_attributes.each do |attr|
+    validates attr, length: { in: 20..200 }
+  end
+end
+```
+
 ## License
 
 MIT, see LICENSE.txt
