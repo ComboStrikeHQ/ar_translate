@@ -51,16 +51,21 @@ module ArTranslate
       end
     end
 
+    def generate_column_type_checker(column)
+      lambda do
+        column_info = self.class.columns_hash[column]
+        fail Error, "Invalid column #{column}" if column_info.nil?
+        fail Error, "Column type for #{column} is not hstore" unless column_info.type == :hstore
+      end
+    end
+
     def model_method(name, &block)
       method_name = "#{prefix}_#{name}"
-      c_column = column
+      check_column_type = generate_column_type_checker(column)
 
       model.instance_eval do
         define_method(method_name) do |*args|
-          column_info = self.class.columns_hash[c_column]
-          fail Error, "Invalid column #{c_column}" if column_info.nil?
-          fail Error, "Column type for #{c_column} is not hstore" unless column_info.type == :hstore
-
+          instance_exec(&check_column_type)
           instance_exec(*args, &block)
         end
       end
