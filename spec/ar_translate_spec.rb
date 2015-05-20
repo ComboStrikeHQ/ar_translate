@@ -46,6 +46,13 @@ RSpec.describe ArTranslate do
     end
   end
 
+  describe 'edge cases' do
+    it 'accepts uppercase languages and symbols as languages' do
+      Post.translates(:addresses, languages: ['DE', :en])
+      expect(Post.address_languages).to eq(%w(de en))
+    end
+  end
+
   describe 'error cases' do
     it 'fails if the name is not pluralized' do
       expect do
@@ -55,23 +62,19 @@ RSpec.describe ArTranslate do
 
     it 'fails for invalid languages' do
       expect do
-        Post.translates(:names, languages: %w(en DE pt))
+        Post.translates(:addresses, languages: %w(en de_du pt))
       end.to raise_error(ArTranslate::Error, /invalid language/i)
 
       expect do
-        Post.translates(:names, languages: %w(en de_du pt))
+        Post.translates(:addresses, languages: %w(en de2 pt))
       end.to raise_error(ArTranslate::Error, /invalid language/i)
 
       expect do
-        Post.translates(:names, languages: %w(en de2 pt))
+        Post.translates(:addresses, languages: %w(en attributes pt))
       end.to raise_error(ArTranslate::Error, /invalid language/i)
 
       expect do
-        Post.translates(:names, languages: %w(en attributes pt))
-      end.to raise_error(ArTranslate::Error, /invalid language/i)
-
-      expect do
-        Post.translates(:names, languages: %w(en languages pt))
+        Post.translates(:addresses, languages: %w(en languages pt))
       end.to raise_error(ArTranslate::Error, /invalid language/i)
     end
 

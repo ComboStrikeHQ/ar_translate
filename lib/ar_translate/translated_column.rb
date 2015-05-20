@@ -45,9 +45,11 @@ module ArTranslate
         fail Error, "No languages specified for column #{column}"
       end
 
+      langs.map! { |lang| lang.to_s.downcase }
+
       langs.each do |lang|
         next if lang =~ /^[a-z]+$/ && !KEYWORDS.include?(lang)
-        fail Error, "Invalid language '#{lang}' (should be lowercase only)"
+        fail Error, "Invalid language '#{lang}' (should be letters only)"
       end
     end
 
