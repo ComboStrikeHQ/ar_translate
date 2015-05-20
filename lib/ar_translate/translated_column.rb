@@ -38,8 +38,7 @@ module ArTranslate
     end
 
     def check_plural_name!
-      return if column.pluralize == column
-      return if column.singularize != column
+      return if column.pluralize == column && prefix != column && prefix.length > 0
 
       fail Error, "Column name #{column} is not pluralized"
     end

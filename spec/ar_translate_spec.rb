@@ -63,6 +63,10 @@ RSpec.describe ArTranslate do
       expect do
         Post.translates(:author, languages: %w(de))
       end.to raise_error(ArTranslate::Error, /not pluralized/)
+
+      expect do
+        Post.translates(:s, languages: %w(de))
+      end.to raise_error(ArTranslate::Error, /not pluralized/)
     end
 
     it 'fails for invalid languages' do
