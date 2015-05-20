@@ -34,10 +34,6 @@ module ArTranslate
     end
 
     def langs
-      if !@langs.is_a?(Array) || @langs.empty?
-        fail Error, "No languages specified for column #{column}"
-      end
-
       @langs.map { |lang| lang.to_s.downcase }.uniq
     end
 
@@ -49,6 +45,10 @@ module ArTranslate
     end
 
     def check_languages!
+      if !@langs.is_a?(Array) || @langs.empty?
+        fail Error, "No languages specified for column #{column}"
+      end
+
       langs.each do |lang|
         next if lang =~ /^[a-z]+$/ && !KEYWORDS.include?(lang)
         fail Error, "Invalid language '#{lang}' (should be letters only)"
