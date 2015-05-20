@@ -51,6 +51,11 @@ RSpec.describe ArTranslate do
       Post.translates(:addresses, languages: ['DE', :en])
       expect(Post.address_languages).to eq(%w(de en))
     end
+
+    it 'accepts duplicate languages' do
+      Post.translates(:addresses, languages: %w(DE de De))
+      expect(Post.address_languages).to eq(%w(de))
+    end
   end
 
   describe 'error cases' do
