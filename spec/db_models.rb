@@ -1,5 +1,3 @@
-Object.__send__(:remove_const, :Post) if defined?(Post)
-
 class Post < ActiveRecord::Base
   extend ArTranslate
 

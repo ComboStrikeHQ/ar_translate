@@ -1,5 +1,6 @@
 RSpec.describe ArTranslate do
-  let(:post) { Post.new }
+  let(:post_model) { Class.new(Post) }
+  let(:post) { post_model.new }
 
   describe 'translating attribute values' do
     it 'keeps basic hstore functionality' do
@@ -34,7 +35,7 @@ RSpec.describe ArTranslate do
     end
 
     it 'returns a list of accessor names at class level' do
-      expect(Post.name_attributes).to eq(%i(name_de name_en))
+      expect(post_model.name_attributes).to eq(%i(name_de name_en))
     end
 
     it 'returns a list of languages' do
@@ -42,64 +43,64 @@ RSpec.describe ArTranslate do
     end
 
     it 'returns a list of languages at class level' do
-      expect(Post.name_languages).to eq(%w(de en))
+      expect(post_model.name_languages).to eq(%w(de en))
     end
   end
 
   describe 'edge cases' do
     it 'accepts uppercase languages and symbols as languages' do
-      Post.translates(:addresses, languages: ['DE', :en])
-      expect(Post.address_languages).to eq(%w(de en))
+      post_model.translates(:addresses, languages: ['DE', :en])
+      expect(post_model.address_languages).to eq(%w(de en))
     end
 
     it 'accepts duplicate languages' do
-      Post.translates(:addresses, languages: %w(DE de De))
-      expect(Post.address_languages).to eq(%w(de))
+      post_model.translates(:addresses, languages: %w(DE de De))
+      expect(post_model.address_languages).to eq(%w(de))
     end
   end
 
   describe 'error cases' do
     it 'fails if the name is not pluralized' do
       expect do
-        Post.translates(:author, languages: %w(de))
+        post_model.translates(:author, languages: %w(de))
       end.to raise_error(ArTranslate::Error, /not pluralized/)
 
       expect do
-        Post.translates(:s, languages: %w(de))
+        post_model.translates(:s, languages: %w(de))
       end.to raise_error(ArTranslate::Error, /not pluralized/)
     end
 
     it 'fails for invalid languages' do
       expect do
-        Post.translates(:addresses, languages: %w(en de_du pt))
+        post_model.translates(:addresses, languages: %w(en de_du pt))
       end.to raise_error(ArTranslate::Error, /invalid language/i)
 
       expect do
-        Post.translates(:addresses, languages: %w(en de2 pt))
+        post_model.translates(:addresses, languages: %w(en de2 pt))
       end.to raise_error(ArTranslate::Error, /invalid language/i)
 
       expect do
-        Post.translates(:addresses, languages: %w(en attributes pt))
+        post_model.translates(:addresses, languages: %w(en attributes pt))
       end.to raise_error(ArTranslate::Error, /invalid language/i)
 
       expect do
-        Post.translates(:addresses, languages: %w(en languages pt))
+        post_model.translates(:addresses, languages: %w(en languages pt))
       end.to raise_error(ArTranslate::Error, /invalid language/i)
     end
 
     it 'fails if there are no languages specified' do
       expect do
-        Post.translates(:addresses)
+        post_model.translates(:addresses)
       end.to raise_error(ArTranslate::Error, /no languages/i)
 
       expect do
-        Post.translates(:addresses)
+        post_model.translates(:addresses)
       end.to raise_error(ArTranslate::Error, /no languages/i)
     end
 
     it 'fails if the column type is not an hstore' do
       expect do
-        Post.translates(:brokens, languages: %w(de))
+        post_model.translates(:brokens, languages: %w(de))
         post.broken_de
       end.to raise_error(ArTranslate::Error, /not hstore/)
     end
