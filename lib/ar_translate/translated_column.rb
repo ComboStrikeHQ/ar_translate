@@ -1,6 +1,6 @@
 module ArTranslate
   class TranslatedColumn
-    KEYWORDS = %w(attributes languages)
+    KEYWORDS = %w(attributes languages).freeze
 
     attr_reader :model, :column, :langs
 
