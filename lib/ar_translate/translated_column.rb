@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ArTranslate
   class TranslatedColumn
     KEYWORDS = %w(attributes languages).freeze
@@ -40,25 +41,25 @@ module ArTranslate
     def check_plural_name!
       return if column.pluralize == column && prefix != column && prefix.length > 0
 
-      fail Error, "Column name #{column} is not pluralized"
+      raise Error, "Column name #{column} is not pluralized"
     end
 
     def check_languages!
       if !@langs.is_a?(Array) || @langs.empty?
-        fail Error, "No languages specified for column #{column}"
+        raise Error, "No languages specified for column #{column}"
       end
 
       langs.each do |lang|
         next if lang =~ /^[a-z]+$/ && !KEYWORDS.include?(lang)
-        fail Error, "Invalid language '#{lang}' (should be letters only)"
+        raise Error, "Invalid language '#{lang}' (should be letters only)"
       end
     end
 
     def generate_column_type_checker(column)
       lambda do
         column_info = self.class.columns_hash[column]
-        fail Error, "Invalid column #{column}" if column_info.nil?
-        fail Error, "Column type for #{column} is not hstore" unless column_info.type == :hstore
+        raise Error, "Invalid column #{column}" if column_info.nil?
+        raise Error, "Column type for #{column} is not hstore" unless column_info.type == :hstore
       end
     end
 

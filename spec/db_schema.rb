@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 DB_SCHEMA = lambda do |_|
   enable_extension :hstore
 

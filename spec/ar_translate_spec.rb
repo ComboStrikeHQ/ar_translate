@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 RSpec.describe ArTranslate do
   let(:post_model) { Class.new(Post) }
   let(:post) { post_model.new }

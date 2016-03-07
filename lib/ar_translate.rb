@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'active_record'
 require 'active_support/inflector'
 require 'ar_translate/version'
